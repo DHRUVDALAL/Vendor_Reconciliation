@@ -1,0 +1,5 @@
+{
+  "PORT": 4004,
+  "CDS_TELEMETRY": "false",
+  "CDS_LOG_LEVEL": "info"
+}

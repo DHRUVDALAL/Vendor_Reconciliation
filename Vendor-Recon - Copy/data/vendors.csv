@@ -1,0 +1,6 @@
+code,name,email,phone,address,currency,gstNumber
+V1001,Acme Industrial Ltd,acme@industrial.com,+15550192,100 Acme Way Chicago IL,USD,GST-US-ACME99
+V1002,Global Logistics Corp,info@globallogistics.com,+44207946,88 Shipping Ln London,EUR,GST-EU-GLO88
+V1003,Apex Software Systems,billing@apexsoft.com,+91225550,45 Tech Park Bangalore,INR,GST-IN-APEX45
+V1004,Zenith Electronics,sales@zenithelec.com,+81355501,1-2-3 Ginza Tokyo,JPY,GST-JP-ZEN12
+V1005,Pioneer Engineering,pioneer@engg.com,+61255501,77 Innovation Rd Sydney,AUD,GST-AU-PIO77

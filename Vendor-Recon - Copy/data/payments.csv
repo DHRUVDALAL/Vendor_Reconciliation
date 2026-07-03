@@ -1,0 +1,3 @@
+paymentReference,vendorCode,invoiceNumber,amount,paymentDate,status,currency
+PAY-1001,V1001,INV-001,15000.00,2026-06-05,Cleared,USD
+PAY-1002,V1003,INV-004,200000.00,2026-06-25,Cleared,INR

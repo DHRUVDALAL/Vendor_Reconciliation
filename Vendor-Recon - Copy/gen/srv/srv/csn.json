@@ -1,0 +1,775 @@
+{
+  "namespace": "sap.btp.vendorrecon",
+  "definitions": {
+    "sap.btp.vendorrecon.Vendors": {
+      "kind": "entity",
+      "elements": {
+        "code": {
+          "key": true,
+          "type": "cds.String",
+          "length": 50
+        },
+        "name": {
+          "type": "cds.String",
+          "length": 255
+        },
+        "email": {
+          "type": "cds.String",
+          "length": 255
+        },
+        "phone": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "address": {
+          "type": "cds.String",
+          "length": 1000
+        },
+        "currency": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "gstNumber": {
+          "type": "cds.String",
+          "length": 50
+        }
+      }
+    },
+    "sap.btp.vendorrecon.Invoices": {
+      "kind": "entity",
+      "elements": {
+        "invoiceNumber": {
+          "key": true,
+          "type": "cds.String",
+          "length": 100
+        },
+        "vendorCode": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "amount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "invoiceDate": {
+          "type": "cds.Date"
+        },
+        "poNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "grnNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "currency": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "gstAmount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "status": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "paymentStatus": {
+          "type": "cds.String",
+          "length": 50
+        }
+      }
+    },
+    "sap.btp.vendorrecon.Payments": {
+      "kind": "entity",
+      "elements": {
+        "paymentReference": {
+          "key": true,
+          "type": "cds.String",
+          "length": 100
+        },
+        "vendorCode": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "invoiceNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "amount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "paymentDate": {
+          "type": "cds.Date"
+        },
+        "status": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "currency": {
+          "type": "cds.String",
+          "length": 3
+        }
+      }
+    },
+    "sap.btp.vendorrecon.VendorStatements": {
+      "kind": "entity",
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "vendorCode": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "invoiceNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "amount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "invoiceDate": {
+          "type": "cds.Date"
+        },
+        "poNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "grnNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "currency": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "gstAmount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "status": {
+          "type": "cds.String",
+          "length": 50
+        }
+      }
+    },
+    "sap.btp.vendorrecon.CompanyStatements": {
+      "kind": "entity",
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "vendorCode": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "invoiceNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "amount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "invoiceDate": {
+          "type": "cds.Date"
+        },
+        "poNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "grnNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "currency": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "gstAmount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "status": {
+          "type": "cds.String",
+          "length": 50
+        }
+      }
+    },
+    "ReconciliationResult": {
+      "kind": "type",
+      "elements": {
+        "invoiceNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "vendorCode": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "status": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "vendorAmount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "companyAmount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "amountVariance": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "vendorDate": {
+          "type": "cds.Date"
+        },
+        "companyDate": {
+          "type": "cds.Date"
+        },
+        "dateVarianceDays": {
+          "type": "cds.Integer"
+        },
+        "currency": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "poNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "grnNumber": {
+          "type": "cds.String",
+          "length": 100
+        }
+      }
+    },
+    "StatementRecord": {
+      "kind": "type",
+      "elements": {
+        "vendorCode": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "invoiceNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "amount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "invoiceDate": {
+          "type": "cds.Date"
+        },
+        "poNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "grnNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "currency": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "gstAmount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "status": {
+          "type": "cds.String",
+          "length": 50
+        }
+      }
+    },
+    "CatalogService": {
+      "@source": "srv/service.cds",
+      "kind": "service",
+      "@path": "/catalog"
+    },
+    "CatalogService.Vendors": {
+      "kind": "entity",
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.btp.vendorrecon.Vendors"
+          ]
+        }
+      },
+      "elements": {
+        "code": {
+          "key": true,
+          "type": "cds.String",
+          "length": 50
+        },
+        "name": {
+          "type": "cds.String",
+          "length": 255
+        },
+        "email": {
+          "type": "cds.String",
+          "length": 255
+        },
+        "phone": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "address": {
+          "type": "cds.String",
+          "length": 1000
+        },
+        "currency": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "gstNumber": {
+          "type": "cds.String",
+          "length": 50
+        }
+      }
+    },
+    "CatalogService.Invoices": {
+      "kind": "entity",
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.btp.vendorrecon.Invoices"
+          ]
+        }
+      },
+      "elements": {
+        "invoiceNumber": {
+          "key": true,
+          "type": "cds.String",
+          "length": 100
+        },
+        "vendorCode": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "amount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "invoiceDate": {
+          "type": "cds.Date"
+        },
+        "poNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "grnNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "currency": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "gstAmount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "status": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "paymentStatus": {
+          "type": "cds.String",
+          "length": 50
+        }
+      }
+    },
+    "CatalogService.Payments": {
+      "kind": "entity",
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.btp.vendorrecon.Payments"
+          ]
+        }
+      },
+      "elements": {
+        "paymentReference": {
+          "key": true,
+          "type": "cds.String",
+          "length": 100
+        },
+        "vendorCode": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "invoiceNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "amount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "paymentDate": {
+          "type": "cds.Date"
+        },
+        "status": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "currency": {
+          "type": "cds.String",
+          "length": 3
+        }
+      }
+    },
+    "CatalogService.ReconcileSummary": {
+      "kind": "type",
+      "elements": {
+        "totalCompany": {
+          "type": "cds.Integer"
+        },
+        "totalVendor": {
+          "type": "cds.Integer"
+        },
+        "matched": {
+          "type": "cds.Integer"
+        },
+        "unmatched": {
+          "type": "cds.Integer"
+        },
+        "missingCompany": {
+          "type": "cds.Integer"
+        },
+        "missingVendor": {
+          "type": "cds.Integer"
+        },
+        "amountMismatch": {
+          "type": "cds.Integer"
+        },
+        "vendorMismatch": {
+          "type": "cds.Integer"
+        },
+        "dateMismatch": {
+          "type": "cds.Integer"
+        }
+      }
+    },
+    "CatalogService.MatchRecord": {
+      "kind": "type",
+      "elements": {
+        "invoiceNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "vendorCode": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "amount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "invoiceDate": {
+          "type": "cds.Date"
+        },
+        "status": {
+          "type": "cds.String",
+          "length": 50
+        }
+      }
+    },
+    "CatalogService.UnmatchRecord": {
+      "kind": "type",
+      "elements": {
+        "invoiceNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "vendorCode": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "companyAmount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "vendorAmount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "companyDate": {
+          "type": "cds.Date"
+        },
+        "vendorDate": {
+          "type": "cds.Date"
+        },
+        "reason": {
+          "type": "cds.String",
+          "length": 100
+        }
+      }
+    },
+    "CatalogService.ReconcileResponse": {
+      "kind": "type",
+      "elements": {
+        "matched": {
+          "items": {
+            "type": "CatalogService.MatchRecord"
+          }
+        },
+        "unmatched": {
+          "items": {
+            "type": "CatalogService.UnmatchRecord"
+          }
+        },
+        "summary": {
+          "type": "CatalogService.ReconcileSummary"
+        }
+      }
+    },
+    "CatalogService.reconcile": {
+      "kind": "action",
+      "params": {
+        "companyContent": {
+          "type": "cds.LargeString"
+        },
+        "vendorContent": {
+          "type": "cds.LargeString"
+        }
+      },
+      "returns": {
+        "type": "CatalogService.ReconcileResponse"
+      }
+    },
+    "CatalogService.VendorStatements": {
+      "kind": "entity",
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.btp.vendorrecon.VendorStatements"
+          ]
+        }
+      },
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "vendorCode": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "invoiceNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "amount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "invoiceDate": {
+          "type": "cds.Date"
+        },
+        "poNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "grnNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "currency": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "gstAmount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "status": {
+          "type": "cds.String",
+          "length": 50
+        }
+      }
+    },
+    "CatalogService.CompanyStatements": {
+      "kind": "entity",
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.btp.vendorrecon.CompanyStatements"
+          ]
+        }
+      },
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "vendorCode": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "invoiceNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "amount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "invoiceDate": {
+          "type": "cds.Date"
+        },
+        "poNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "grnNumber": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "currency": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "gstAmount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "status": {
+          "type": "cds.String",
+          "length": 50
+        }
+      }
+    },
+    "CatalogService.UploadStatement": {
+      "kind": "action",
+      "params": {
+        "fileType": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "statementType": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "content": {
+          "type": "cds.LargeString"
+        }
+      },
+      "returns": {
+        "items": {
+          "type": "StatementRecord"
+        }
+      }
+    },
+    "CatalogService.Reconcile": {
+      "kind": "action",
+      "params": {
+        "vendorStatements": {
+          "items": {
+            "type": "StatementRecord"
+          }
+        },
+        "companyStatements": {
+          "items": {
+            "type": "StatementRecord"
+          }
+        },
+        "toleranceAmount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "toleranceDays": {
+          "type": "cds.Integer"
+        }
+      },
+      "returns": {
+        "items": {
+          "type": "ReconciliationResult"
+        }
+      }
+    },
+    "CatalogService.seedSapMockData": {
+      "kind": "action",
+      "params": {
+        "fileContent": {
+          "type": "cds.LargeString"
+        }
+      },
+      "returns": {
+        "type": "cds.String"
+      }
+    },
+    "CatalogService.uploadStatement": {
+      "kind": "action",
+      "params": {
+        "fileContent": {
+          "type": "cds.LargeString"
+        }
+      },
+      "returns": {
+        "type": "cds.String"
+      }
+    },
+    "CatalogService.getCockpitData": {
+      "kind": "function",
+      "returns": {
+        "type": "cds.String"
+      }
+    },
+    "CatalogService.getWorkbenchData": {
+      "kind": "function",
+      "returns": {
+        "type": "cds.String"
+      }
+    },
+    "CatalogService.resolveException": {
+      "kind": "action",
+      "params": {
+        "invoiceNumber": {
+          "type": "cds.String"
+        }
+      },
+      "returns": {
+        "type": "cds.String"
+      }
+    }
+  },
+  "meta": {
+    "creator": "CDS Compiler v4.9.10",
+    "flavor": "inferred"
+  },
+  "$version": "2.0"
+}

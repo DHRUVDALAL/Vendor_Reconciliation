@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+    <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+    <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+  </edmx:Reference>
+  <edmx:DataServices>
+    <Schema Namespace="CatalogService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityContainer Name="EntityContainer">
+        <EntitySet Name="Vendors" EntityType="CatalogService.Vendors"/>
+        <EntitySet Name="Invoices" EntityType="CatalogService.Invoices"/>
+        <EntitySet Name="Payments" EntityType="CatalogService.Payments"/>
+        <EntitySet Name="VendorStatements" EntityType="CatalogService.VendorStatements"/>
+        <EntitySet Name="CompanyStatements" EntityType="CatalogService.CompanyStatements"/>
+        <ActionImport Name="reconcile" Action="CatalogService.reconcile"/>
+        <ActionImport Name="UploadStatement" Action="CatalogService.UploadStatement"/>
+        <ActionImport Name="Reconcile" Action="CatalogService.Reconcile"/>
+        <ActionImport Name="seedSapMockData" Action="CatalogService.seedSapMockData"/>
+        <ActionImport Name="uploadStatement" Action="CatalogService.uploadStatement"/>
+        <FunctionImport Name="getCockpitData" Function="CatalogService.getCockpitData"/>
+        <FunctionImport Name="getWorkbenchData" Function="CatalogService.getWorkbenchData"/>
+        <ActionImport Name="resolveException" Action="CatalogService.resolveException"/>
+      </EntityContainer>
+      <EntityType Name="Vendors">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="code" Type="Edm.String" MaxLength="50" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="email" Type="Edm.String" MaxLength="255"/>
+        <Property Name="phone" Type="Edm.String" MaxLength="50"/>
+        <Property Name="address" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="currency" Type="Edm.String" MaxLength="3"/>
+        <Property Name="gstNumber" Type="Edm.String" MaxLength="50"/>
+      </EntityType>
+      <EntityType Name="Invoices">
+        <Key>
+          <PropertyRef Name="invoiceNumber"/>
+        </Key>
+        <Property Name="invoiceNumber" Type="Edm.String" MaxLength="100" Nullable="false"/>
+        <Property Name="vendorCode" Type="Edm.String" MaxLength="50"/>
+        <Property Name="amount" Type="Edm.Decimal" Precision="15" Scale="2"/>
+        <Property Name="invoiceDate" Type="Edm.Date"/>
+        <Property Name="poNumber" Type="Edm.String" MaxLength="100"/>
+        <Property Name="grnNumber" Type="Edm.String" MaxLength="100"/>
+        <Property Name="currency" Type="Edm.String" MaxLength="3"/>
+        <Property Name="gstAmount" Type="Edm.Decimal" Precision="15" Scale="2"/>
+        <Property Name="status" Type="Edm.String" MaxLength="50"/>
+        <Property Name="paymentStatus" Type="Edm.String" MaxLength="50"/>
+      </EntityType>
+      <EntityType Name="Payments">
+        <Key>
+          <PropertyRef Name="paymentReference"/>
+        </Key>
+        <Property Name="paymentReference" Type="Edm.String" MaxLength="100" Nullable="false"/>
+        <Property Name="vendorCode" Type="Edm.String" MaxLength="50"/>
+        <Property Name="invoiceNumber" Type="Edm.String" MaxLength="100"/>
+        <Property Name="amount" Type="Edm.Decimal" Precision="15" Scale="2"/>
+        <Property Name="paymentDate" Type="Edm.Date"/>
+        <Property Name="status" Type="Edm.String" MaxLength="50"/>
+        <Property Name="currency" Type="Edm.String" MaxLength="3"/>
+      </EntityType>
+      <EntityType Name="VendorStatements">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="vendorCode" Type="Edm.String" MaxLength="50"/>
+        <Property Name="invoiceNumber" Type="Edm.String" MaxLength="100"/>
+        <Property Name="amount" Type="Edm.Decimal" Precision="15" Scale="2"/>
+        <Property Name="invoiceDate" Type="Edm.Date"/>
+        <Property Name="poNumber" Type="Edm.String" MaxLength="100"/>
+        <Property Name="grnNumber" Type="Edm.String" MaxLength="100"/>
+        <Property Name="currency" Type="Edm.String" MaxLength="3"/>
+        <Property Name="gstAmount" Type="Edm.Decimal" Precision="15" Scale="2"/>
+        <Property Name="status" Type="Edm.String" MaxLength="50"/>
+      </EntityType>
+      <EntityType Name="CompanyStatements">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="vendorCode" Type="Edm.String" MaxLength="50"/>
+        <Property Name="invoiceNumber" Type="Edm.String" MaxLength="100"/>
+        <Property Name="amount" Type="Edm.Decimal" Precision="15" Scale="2"/>
+        <Property Name="invoiceDate" Type="Edm.Date"/>
+        <Property Name="poNumber" Type="Edm.String" MaxLength="100"/>
+        <Property Name="grnNumber" Type="Edm.String" MaxLength="100"/>
+        <Property Name="currency" Type="Edm.String" MaxLength="3"/>
+        <Property Name="gstAmount" Type="Edm.Decimal" Precision="15" Scale="2"/>
+        <Property Name="status" Type="Edm.String" MaxLength="50"/>
+      </EntityType>
+      <ComplexType Name="ReconcileSummary">
+        <Property Name="totalCompany" Type="Edm.Int32"/>
+        <Property Name="totalVendor" Type="Edm.Int32"/>
+        <Property Name="matched" Type="Edm.Int32"/>
+        <Property Name="unmatched" Type="Edm.Int32"/>
+        <Property Name="missingCompany" Type="Edm.Int32"/>
+        <Property Name="missingVendor" Type="Edm.Int32"/>
+        <Property Name="amountMismatch" Type="Edm.Int32"/>
+        <Property Name="vendorMismatch" Type="Edm.Int32"/>
+        <Property Name="dateMismatch" Type="Edm.Int32"/>
+      </ComplexType>
+      <ComplexType Name="MatchRecord">
+        <Property Name="invoiceNumber" Type="Edm.String" MaxLength="100"/>
+        <Property Name="vendorCode" Type="Edm.String" MaxLength="50"/>
+        <Property Name="amount" Type="Edm.Decimal" Precision="15" Scale="2"/>
+        <Property Name="invoiceDate" Type="Edm.Date"/>
+        <Property Name="status" Type="Edm.String" MaxLength="50"/>
+      </ComplexType>
+      <ComplexType Name="UnmatchRecord">
+        <Property Name="invoiceNumber" Type="Edm.String" MaxLength="100"/>
+        <Property Name="vendorCode" Type="Edm.String" MaxLength="50"/>
+        <Property Name="companyAmount" Type="Edm.Decimal" Precision="15" Scale="2"/>
+        <Property Name="vendorAmount" Type="Edm.Decimal" Precision="15" Scale="2"/>
+        <Property Name="companyDate" Type="Edm.Date"/>
+        <Property Name="vendorDate" Type="Edm.Date"/>
+        <Property Name="reason" Type="Edm.String" MaxLength="100"/>
+      </ComplexType>
+      <ComplexType Name="ReconcileResponse">
+        <Property Name="matched" Type="Collection(CatalogService.MatchRecord)" Nullable="false"/>
+        <Property Name="unmatched" Type="Collection(CatalogService.UnmatchRecord)" Nullable="false"/>
+        <Property Name="summary" Type="CatalogService.ReconcileSummary"/>
+      </ComplexType>
+      <ComplexType Name="StatementRecord">
+        <Property Name="vendorCode" Type="Edm.String" MaxLength="50"/>
+        <Property Name="invoiceNumber" Type="Edm.String" MaxLength="100"/>
+        <Property Name="amount" Type="Edm.Decimal" Precision="15" Scale="2"/>
+        <Property Name="invoiceDate" Type="Edm.Date"/>
+        <Property Name="poNumber" Type="Edm.String" MaxLength="100"/>
+        <Property Name="grnNumber" Type="Edm.String" MaxLength="100"/>
+        <Property Name="currency" Type="Edm.String" MaxLength="3"/>
+        <Property Name="gstAmount" Type="Edm.Decimal" Precision="15" Scale="2"/>
+        <Property Name="status" Type="Edm.String" MaxLength="50"/>
+      </ComplexType>
+      <ComplexType Name="ReconciliationResult">
+        <Property Name="invoiceNumber" Type="Edm.String" MaxLength="100"/>
+        <Property Name="vendorCode" Type="Edm.String" MaxLength="50"/>
+        <Property Name="status" Type="Edm.String" MaxLength="50"/>
+        <Property Name="vendorAmount" Type="Edm.Decimal" Precision="15" Scale="2"/>
+        <Property Name="companyAmount" Type="Edm.Decimal" Precision="15" Scale="2"/>
+        <Property Name="amountVariance" Type="Edm.Decimal" Precision="15" Scale="2"/>
+        <Property Name="vendorDate" Type="Edm.Date"/>
+        <Property Name="companyDate" Type="Edm.Date"/>
+        <Property Name="dateVarianceDays" Type="Edm.Int32"/>
+        <Property Name="currency" Type="Edm.String" MaxLength="3"/>
+        <Property Name="poNumber" Type="Edm.String" MaxLength="100"/>
+        <Property Name="grnNumber" Type="Edm.String" MaxLength="100"/>
+      </ComplexType>
+      <Action Name="reconcile" IsBound="false">
+        <Parameter Name="companyContent" Type="Edm.String"/>
+        <Parameter Name="vendorContent" Type="Edm.String"/>
+        <ReturnType Type="CatalogService.ReconcileResponse"/>
+      </Action>
+      <Action Name="UploadStatement" IsBound="false">
+        <Parameter Name="fileType" Type="Edm.String" MaxLength="10"/>
+        <Parameter Name="statementType" Type="Edm.String" MaxLength="20"/>
+        <Parameter Name="content" Type="Edm.String"/>
+        <ReturnType Type="Collection(CatalogService.StatementRecord)" Nullable="false"/>
+      </Action>
+      <Action Name="Reconcile" IsBound="false">
+        <Parameter Name="vendorStatements" Type="Collection(CatalogService.StatementRecord)" Nullable="false"/>
+        <Parameter Name="companyStatements" Type="Collection(CatalogService.StatementRecord)" Nullable="false"/>
+        <Parameter Name="toleranceAmount" Type="Edm.Decimal" Precision="15" Scale="2"/>
+        <Parameter Name="toleranceDays" Type="Edm.Int32"/>
+        <ReturnType Type="Collection(CatalogService.ReconciliationResult)" Nullable="false"/>
+      </Action>
+      <Action Name="seedSapMockData" IsBound="false">
+        <Parameter Name="fileContent" Type="Edm.String"/>
+        <ReturnType Type="Edm.String"/>
+      </Action>
+      <Action Name="uploadStatement" IsBound="false">
+        <Parameter Name="fileContent" Type="Edm.String"/>
+        <ReturnType Type="Edm.String"/>
+      </Action>
+      <Function Name="getCockpitData" IsBound="false" IsComposable="false">
+        <ReturnType Type="Edm.String"/>
+      </Function>
+      <Function Name="getWorkbenchData" IsBound="false" IsComposable="false">
+        <ReturnType Type="Edm.String"/>
+      </Function>
+      <Action Name="resolveException" IsBound="false">
+        <Parameter Name="invoiceNumber" Type="Edm.String"/>
+        <ReturnType Type="Edm.String"/>
+      </Action>
+      <Annotations Target="CatalogService.VendorStatements/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="CatalogService.CompanyStatements/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

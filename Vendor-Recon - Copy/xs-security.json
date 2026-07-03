@@ -1,0 +1,44 @@
+{
+  "xsappname": "vendor-recon",
+  "tenant-mode": "shared",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.Admin",
+      "description": "Administrator of Vendor Reconciliation System"
+    },
+    {
+      "name": "$XSAPPNAME.Finance",
+      "description": "Finance user of Vendor Reconciliation System"
+    },
+    {
+      "name": "$XSAPPNAME.Viewer",
+      "description": "Viewer user of Vendor Reconciliation System"
+    }
+  ],
+  "role-templates": [
+    {
+      "name": "ReconAdmin",
+      "description": "Administrator Role Template",
+      "scope-references": [
+        "$XSAPPNAME.Admin",
+        "$XSAPPNAME.Finance",
+        "$XSAPPNAME.Viewer"
+      ]
+    },
+    {
+      "name": "ReconFinance",
+      "description": "Finance Role Template",
+      "scope-references": [
+        "$XSAPPNAME.Finance",
+        "$XSAPPNAME.Viewer"
+      ]
+    },
+    {
+      "name": "ReconViewer",
+      "description": "Viewer Role Template",
+      "scope-references": [
+        "$XSAPPNAME.Viewer"
+      ]
+    }
+  ]
+}

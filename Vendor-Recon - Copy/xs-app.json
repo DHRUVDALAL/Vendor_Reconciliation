@@ -1,0 +1,21 @@
+{
+  "welcomeFile": "webapp/index.html",
+  "authenticationMethod": "route",
+  "routes": [
+    {
+      "source": "^/webapp/(.*)$",
+      "target": "/webapp/$1",
+      "authenticationType": "xsuaa"
+    },
+    {
+      "source": "^/srv/(.*)$",
+      "target": "/srv/$1",
+      "authenticationType": "xsuaa"
+    },
+    {
+      "source": "^/(.*)$",
+      "target": "/$1",
+      "authenticationType": "xsuaa"
+    }
+  ]
+}

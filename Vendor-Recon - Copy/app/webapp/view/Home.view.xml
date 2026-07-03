@@ -1,0 +1,348 @@
+<mvc:View
+    controllerName="sap.btp.vendorrecon.controller.Home"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:u="sap.ui.unified"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core"
+    height="100%">
+    <Page id="page" title="SAP Vendor Reconciliation Cockpit">
+        <content>
+            <IconTabBar id="idIconTabBar" class="sapUiResponsiveContentPadding">
+                <items>
+                    <!-- TAB 1: HOME WELCOME (NEW) -->
+                    <IconTabFilter text="Home" icon="sap-icon://home" key="home">
+                        <VBox class="sapUiMediumMargin" alignItems="Center">
+                            <Panel headerText="Welcome" class="sapUiSmallMarginBottom" width="100%">
+                                <VBox class="sapUiSmallMargin">
+                                    <Title text="Vendor Reconciliation Dashboard (Demo)" level="H1" class="sapUiSmallMarginBottom" />
+                                    <Text text="This demonstration environment showcases an in-memory matching cockpit reconciling corporate accounts payables against vendor statement ledger items." />
+                                    <Text text="Use the tabs above or the Upload tab to begin matching statements." class="sapUiSmallMarginTop" />
+                                </VBox>
+                            </Panel>
+                        </VBox>
+                    </IconTabFilter>
+
+                    <!-- TAB 2: VENDORS (PRESERVED) -->
+                    <IconTabFilter text="Vendors" icon="sap-icon://supplier" key="vendors">
+                        <Table id="vendorsTable" items="{vendorsModel>/}">
+                            <columns>
+                                <Column><Text text="Vendor Code" /></Column>
+                                <Column><Text text="Vendor Name" /></Column>
+                                <Column><Text text="Email" /></Column>
+                                <Column><Text text="Phone" /></Column>
+                                <Column><Text text="Address" /></Column>
+                                <Column><Text text="GST Number" /></Column>
+                                <Column><Text text="Currency" /></Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <Text text="{vendorsModel>code}" />
+                                        <Text text="{vendorsModel>name}" />
+                                        <Text text="{vendorsModel>email}" />
+                                        <Text text="{vendorsModel>phone}" />
+                                        <Text text="{vendorsModel>address}" />
+                                        <Text text="{vendorsModel>gstNumber}" />
+                                        <Text text="{vendorsModel>currency}" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </IconTabFilter>
+
+                    <!-- TAB 3: INVOICES (PRESERVED) -->
+                    <IconTabFilter text="Invoices" icon="sap-icon://sales-document" key="invoices">
+                        <Table id="invoicesTable" items="{invoicesModel>/}">
+                            <columns>
+                                <Column><Text text="Invoice Number" /></Column>
+                                <Column><Text text="Vendor Code" /></Column>
+                                <Column><Text text="Invoice Date" /></Column>
+                                <Column><Text text="Amount" /></Column>
+                                <Column><Text text="Currency" /></Column>
+                                <Column><Text text="Status" /></Column>
+                                <Column><Text text="Payment Status" /></Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <Text text="{invoicesModel>invoiceNumber}" />
+                                        <Text text="{invoicesModel>vendorCode}" />
+                                        <Text text="{invoicesModel>invoiceDate}" />
+                                        <Text text="{invoicesModel>amount}" />
+                                        <Text text="{invoicesModel>currency}" />
+                                        <Text text="{invoicesModel>status}" />
+                                        <Text text="{invoicesModel>paymentStatus}" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </IconTabFilter>
+
+                    <!-- TAB 4: PAYMENTS (PRESERVED) -->
+                    <IconTabFilter text="Payments" icon="sap-icon://payment" key="payments">
+                        <Table id="paymentsTable" items="{paymentsModel>/}">
+                            <columns>
+                                <Column><Text text="Payment Reference" /></Column>
+                                <Column><Text text="Invoice Number" /></Column>
+                                <Column><Text text="Vendor Code" /></Column>
+                                <Column><Text text="Payment Date" /></Column>
+                                <Column><Text text="Amount" /></Column>
+                                <Column><Text text="Status" /></Column>
+                                <Column><Text text="Currency" /></Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <Text text="{paymentsModel>paymentReference}" />
+                                        <Text text="{paymentsModel>invoiceNumber}" />
+                                        <Text text="{paymentsModel>vendorCode}" />
+                                        <Text text="{paymentsModel>paymentDate}" />
+                                        <Text text="{paymentsModel>amount}" />
+                                        <Text text="{paymentsModel>status}" />
+                                        <Text text="{paymentsModel>currency}" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </IconTabFilter>
+
+                    <!-- TAB 5: UPLOAD SCREEN (NEW) -->
+                    <IconTabFilter text="Upload" icon="sap-icon://upload" key="upload">
+                        <VBox class="sapUiMediumMargin">
+                            <!-- Panel 1: Seed SAP Mock Data -->
+                            <Panel headerText="Seed SAP Mock Data" class="sapUiSmallMarginBottom">
+                                <VBox class="sapUiSmallMargin">
+                                    <Label text="SAP Ledger Mock File (.xlsx)" design="Bold" class="sapUiTinyMarginBottom" />
+                                    <u:FileUploader id="sapLedgerUploader"
+                                                    fileType="xlsx"
+                                                    placeholder="Select SAP_Ledger_Mock.xlsx..."
+                                                    width="100%"
+                                                    class="sapUiSmallMarginBottom" />
+                                    <HBox alignItems="Center">
+                                        <Button text="Seed Data" type="Emphasized" icon="sap-icon://database" press=".onSeedMockData" />
+                                        <Label text="Status:" class="sapUiSmallMarginBegin" design="Bold" />
+                                        <ObjectStatus id="txtSeedStatus" text="Waiting" state="None" class="sapUiTinyMarginBegin" />
+                                    </HBox>
+                                </VBox>
+                            </Panel>
+
+                            <!-- Panel 2: Upload Vendor Statement -->
+                            <Panel headerText="Upload Vendor Statement" class="sapUiSmallMarginBottom">
+                                <VBox class="sapUiSmallMargin">
+                                    <Label text="Vendor Statement File (.xlsx)" design="Bold" class="sapUiTinyMarginBottom" />
+                                    <u:FileUploader id="vendorStatementUploader"
+                                                    fileType="xlsx"
+                                                    placeholder="Select Vendor_Statement.xlsx..."
+                                                    width="100%"
+                                                    class="sapUiSmallMarginBottom" />
+                                    <HBox alignItems="Center">
+                                        <Button text="Upload and Match" type="Emphasized" icon="sap-icon://simulate" press=".onUploadAndMatch" />
+                                        <Label text="Status:" class="sapUiSmallMarginBegin" design="Bold" />
+                                        <ObjectStatus id="txtUploadStatus" text="Waiting" state="None" class="sapUiTinyMarginBegin" />
+                                    </HBox>
+                                </VBox>
+                            </Panel>
+
+                            <!-- Cockpit Navigation Button -->
+                            <HBox justifyContent="End" class="sapUiSmallMarginTop">
+                                <Button text="Go To Cockpit" type="Accept" icon="sap-icon://feeder-arrow" press=".onGoToCockpit" />
+                            </HBox>
+                        </VBox>
+                    </IconTabFilter>
+
+                    <!-- TAB 6: COCKPIT SCREEN (NEW) -->
+                    <IconTabFilter text="Cockpit" icon="sap-icon://analytics" key="cockpit">
+                        <VBox class="sapUiMediumMargin">
+                            <Title text="Reconciliation Dashboard Cockpit" level="H2" class="sapUiMediumMarginBottom" />
+
+                            <!-- KPI Cards -->
+                            <l:Grid defaultSpan="XL3 L4 M6 S12" class="sapUiMediumMarginBottom">
+                                <VBox class="kpiCard kpiBlue animateFadeIn">
+                                    <Label text="Total Uploaded" class="sapUiTinyMarginBottom" />
+                                    <Title text="{cockpitModel>/totalUploaded}" level="H1" />
+                                </VBox>
+                                <VBox class="kpiCard kpiGreen animateFadeIn">
+                                    <Label text="Matched" class="sapUiTinyMarginBottom" />
+                                    <Title text="{cockpitModel>/matched}" level="H1" />
+                                </VBox>
+                                <VBox class="kpiCard kpiRed animateFadeIn">
+                                    <Label text="Exceptions" class="sapUiTinyMarginBottom" />
+                                    <Title text="{cockpitModel>/exceptions}" level="H1" />
+                                </VBox>
+                                <VBox class="kpiCard kpiOrange animateFadeIn">
+                                    <Label text="Pending" class="sapUiTinyMarginBottom" />
+                                    <Title text="{cockpitModel>/pending}" level="H1" />
+                                </VBox>
+                                <VBox class="kpiCard kpiGreen animateFadeIn">
+                                    <Label text="Resolved" class="sapUiTinyMarginBottom" />
+                                    <Title text="{cockpitModel>/resolved}" level="H1" />
+                                </VBox>
+                                <VBox class="kpiCard kpiTeal animateFadeIn">
+                                    <Label text="Match Rate (%)" class="sapUiTinyMarginBottom" />
+                                    <Title text="{cockpitModel>/matchRate}" level="H1" />
+                                </VBox>
+                                <VBox class="kpiCard kpiPurple animateFadeIn">
+                                    <Label text="Execution Time (ms)" class="sapUiTinyMarginBottom" />
+                                    <Title text="{cockpitModel>/executionTimeMs}" level="H1" />
+                                </VBox>
+                            </l:Grid>
+
+                            <!-- Charts Grid -->
+                            <l:Grid defaultSpan="XL4 L6 M12 S12" class="sapUiSmallMarginBottom">
+                                <Panel headerText="Matched vs Unmatched (Pie)" height="350px">
+                                    <VBox id="pieChartBox" class="sapUiMediumMargin" />
+                                </Panel>
+                                <Panel headerText="Difference Categories (Bar)" height="350px">
+                                    <VBox id="barChartBox" class="sapUiMediumMargin" />
+                                </Panel>
+                                <Panel headerText="Resolved vs Pending (Donut)" height="350px">
+                                    <VBox id="donutChartBox" class="sapUiMediumMargin" />
+                                </Panel>
+                            </l:Grid>
+
+                            <!-- Recent Upload metadata panel -->
+                            <Panel headerText="Recent Matching Run Details" class="sapUiMediumMarginTop">
+                                <HBox wrap="Wrap" justifyContent="SpaceBetween" class="sapUiSmallMargin">
+                                    <VBox>
+                                        <Label text="Last Matching Run Timestamp" design="Bold" />
+                                        <Text text="{cockpitModel>/recentUpload/uploadTime}" />
+                                    </VBox>
+                                    <VBox>
+                                        <Label text="Statement Records Processed" design="Bold" />
+                                        <Text text="{cockpitModel>/recentUpload/totalRows}" />
+                                    </VBox>
+                                    <VBox>
+                                        <Label text="Reconciliation Engine Duration" design="Bold" />
+                                        <Text text="{cockpitModel>/recentUpload/durationMs} ms" />
+                                    </VBox>
+                                    <VBox>
+                                        <Label text="Matched Count" design="Bold" />
+                                        <Text text="{cockpitModel>/recentUpload/matchedCount}" />
+                                    </VBox>
+                                    <VBox>
+                                        <Label text="Exception Count" design="Bold" />
+                                        <Text text="{cockpitModel>/recentUpload/exceptionCount}" />
+                                    </VBox>
+                                </HBox>
+                            </Panel>
+                        </VBox>
+                    </IconTabFilter>
+
+                    <!-- TAB 7: WORKBENCH SCREEN (NEW) -->
+                    <IconTabFilter text="Workbench" icon="sap-icon://work-history" key="workbench">
+                        <VBox class="sapUiMediumMargin">
+                            <Toolbar>
+                                <Title text="Reconciliation Line Item Workbench" level="H2" />
+                                <ToolbarSpacer />
+                                <Button text="Export Matched" type="Accept" icon="sap-icon://excel-attachment" press=".onExportMatchedXLSX" />
+                                <Button text="Export Exceptions" type="Reject" icon="sap-icon://excel-attachment" press=".onExportExceptionsXLSX" />
+                                <Button text="Export Dashboard" type="Emphasized" icon="sap-icon://excel-attachment" press=".onExportDashboardXLSX" />
+                            </Toolbar>
+
+                            <!-- Filter Bar Panel -->
+                            <Panel headerText="Filters" expandable="true" expanded="true" class="sapUiSmallMarginBottom">
+                                <HBox wrap="Wrap" alignItems="Center">
+                                    <VBox class="sapUiSmallMarginEnd">
+                                        <Label text="Search Invoice" />
+                                        <SearchField id="filterInvoiceInput" search=".onFilterWorkbench" width="160px" />
+                                    </VBox>
+                                    <VBox class="sapUiSmallMarginEnd">
+                                        <Label text="Vendor Code" />
+                                        <Input id="filterVendorInput" change=".onFilterWorkbench" width="120px" />
+                                    </VBox>
+                                    <VBox class="sapUiSmallMarginEnd">
+                                        <Label text="Outcome Status" />
+                                        <Select id="filterOutcomeSelect" change=".onFilterWorkbench" width="150px">
+                                            <core:Item key="ALL" text="Show All" />
+                                            <core:Item key="MATCHED" text="Matched" />
+                                            <core:Item key="DIFF" text="Differences" />
+                                            <core:Item key="MISSING" text="Missing Records" />
+                                        </Select>
+                                    </VBox>
+                                    <VBox class="sapUiSmallMarginEnd">
+                                        <Label text="Exception Status" />
+                                        <Select id="filterStatusSelect" change=".onFilterWorkbench" width="120px">
+                                            <core:Item key="ALL" text="Show All" />
+                                            <core:Item key="OPEN" text="Open" />
+                                            <core:Item key="RESOLVED" text="Resolved" />
+                                        </Select>
+                                    </VBox>
+                                    <VBox class="sapUiSmallMarginEnd">
+                                        <Label text="Currency" />
+                                        <Input id="filterCurrencyInput" change=".onFilterWorkbench" width="80px" />
+                                    </VBox>
+                                    <VBox class="sapUiSmallMarginEnd">
+                                        <Label text="Sort Column" />
+                                        <Select id="sortColumnSelect" change=".onSortWorkbench" width="130px">
+                                            <core:Item key="invoiceNumber" text="Invoice #" />
+                                            <core:Item key="vendorCode" text="Vendor Code" />
+                                            <core:Item key="invoiceDate" text="Invoice Date" />
+                                            <core:Item key="amount" text="Amount" />
+                                            <core:Item key="outcome" text="Outcome" />
+                                        </Select>
+                                    </VBox>
+                                    <VBox class="sapUiSmallMarginEnd">
+                                        <Label text="Sort Order" />
+                                        <Select id="sortOrderSelect" change=".onSortWorkbench" width="100px">
+                                            <core:Item key="ASC" text="Ascending" />
+                                            <core:Item key="DESC" text="Descending" />
+                                        </Select>
+                                    </VBox>
+                                    <Button text="Reset Filters" press=".onResetWorkbenchFilters" class="sapUiSmallMarginTop" />
+                                </HBox>
+                            </Panel>
+
+                            <!-- Workbench Table -->
+                            <Table id="workbenchTable" items="{workbenchModel>/matchResults}">
+                                <columns>
+                                    <Column><Text text="Invoice" /></Column>
+                                    <Column><Text text="Vendor" /></Column>
+                                    <Column><Text text="Amount" /></Column>
+                                    <Column><Text text="Currency" /></Column>
+                                    <Column><Text text="PO Reference" /></Column>
+                                    <Column><Text text="Payment Reference" /></Column>
+                                    <Column><Text text="Outcome" /></Column>
+                                    <Column><Text text="Status" /></Column>
+                                    <Column><Text text="Rule Applied" /></Column>
+                                    <Column width="6rem"><Text text="Action" /></Column>
+                                </columns>
+                                <items>
+                                    <!-- Use dynamic row highlighting / classes based on Outcome -->
+                                    <ColumnListItem class="{= ${workbenchModel>status} === 'MATCHED' ? 'rowMatched' : (${workbenchModel>status} === 'RESOLVED' ? 'rowMatched' : (${workbenchModel>status} === 'DIFFERENCE' ? 'rowAmountMismatch' : 'rowMissing')) }">
+                                        <cells>
+                                            <Text text="{workbenchModel>invoiceNumber}" />
+                                            <Text text="{workbenchModel>vendorCode}" />
+                                            <Text text="{workbenchModel>amount}" />
+                                            <Text text="{workbenchModel>currency}" />
+                                            <Text text="{workbenchModel>poReference}" />
+                                            <Text text="{workbenchModel>paymentReference}" />
+                                            
+                                            <!-- Colored badging based on status rules -->
+                                            <ObjectStatus text="{workbenchModel>outcome}"
+                                                          state="{= ${workbenchModel>status} === 'MATCHED' ? 'Success' : (${workbenchModel>status} === 'RESOLVED' ? 'Success' : (${workbenchModel>status} === 'DIFFERENCE' ? 'Warning' : 'Error')) }"
+                                                          icon="{= ${workbenchModel>status} === 'MATCHED' ? 'sap-icon://sys-enter-2' : (${workbenchModel>status} === 'RESOLVED' ? 'sap-icon://sys-enter-2' : (${workbenchModel>status} === 'DIFFERENCE' ? 'sap-icon://alert' : 'sap-icon://error')) }" />
+                                            
+                                            <!-- Exception status badge -->
+                                            <ObjectStatus text="{workbenchModel>exceptionStatus}"
+                                                          state="{= ${workbenchModel>exceptionStatus} === 'RESOLVED' ? 'Success' : (${workbenchModel>exceptionStatus} === 'OPEN' ? 'Error' : 'None') }"
+                                                          icon="{= ${workbenchModel>exceptionStatus} === 'RESOLVED' ? 'sap-icon://accept' : (${workbenchModel>exceptionStatus} === 'OPEN' ? 'sap-icon://decline' : '') }" />
+                                            
+                                            <Text text="{workbenchModel>ruleApplied}" />
+
+                                            <!-- Resolve Action button -->
+                                            <Button text="Resolve"
+                                                    type="Emphasized"
+                                                    enabled="{= ${workbenchModel>exceptionStatus} === 'OPEN' }"
+                                                    press=".onResolveException" />
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </VBox>
+                    </IconTabFilter>
+                </items>
+            </IconTabBar>
+        </content>
+    </Page>
+</mvc:View>

@@ -1,0 +1,149 @@
+/* ==================================================
+   DESIGN SYSTEM FOR VENDOR RECONCILIATION SYSTEM
+   ================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+/* Apply modern font globally */
+.sapMPage, .sapMText, .sapMLabel, .sapMTitle, .sapMList, .sapMTable, .sapMButtonText {
+    font-family: 'Outfit', 'Inter', -apple-system, sans-serif !important;
+}
+
+/* Premium Header Gradient */
+.reconHeader {
+    background: linear-gradient(135deg, #1f3b68 0%, #10213d 100%) !important;
+    border-bottom: 2px solid #3b82f6 !important;
+}
+
+.reconHeaderTitle {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+/* Side Navigation Styling */
+.reconSideNav {
+    background-color: #0d1b2a !important;
+    border-right: 1px solid #1e293b !important;
+}
+
+/* KPI Card Cards Grid styling */
+.kpiCard {
+    background: #ffffff !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid rgba(226, 232, 240, 0.8) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    overflow: hidden;
+}
+
+.kpiCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1) !important;
+    border-color: #3b82f6 !important;
+}
+
+/* Color markers for different KPI cards */
+.kpiBlue { border-left: 5px solid #3b82f6 !important; }
+.kpiGreen { border-left: 5px solid #10b981 !important; }
+.kpiRed { border-left: 5px solid #ef4444 !important; }
+.kpiOrange { border-left: 5px solid #f59e0b !important; }
+.kpiPurple { border-left: 5px solid #8b5cf6 !important; }
+.kpiTeal { border-left: 5px solid #14b8a6 !important; }
+
+/* Status Badges */
+.statusBadge {
+    padding: 4px 10px !important;
+    border-radius: 16px !important;
+    font-weight: 600 !important;
+    font-size: 0.75rem !important;
+    text-align: center;
+    display: inline-block;
+}
+
+.statusMatched {
+    background-color: #e6f4ea !important;
+    color: #137333 !important;
+    border: 1px solid #137333 !important;
+}
+
+.statusMismatch {
+    background-color: #fce8e6 !important;
+    color: #c5221f !important;
+    border: 1px solid #c5221f !important;
+}
+
+.statusDuplicate {
+    background-color: #fef3c7 !important;
+    color: #d97706 !important;
+    border: 1px solid #d97706 !important;
+}
+
+.statusMissingVendor {
+    background-color: #eff6ff !important;
+    color: #1d4ed8 !important;
+    border: 1px solid #1d4ed8 !important;
+}
+
+.statusMissingCompany {
+    background-color: #faf5ff !important;
+    color: #6d28d9 !important;
+    border: 1px solid #6d28d9 !important;
+}
+
+.statusInvalid {
+    background-color: #f3f4f6 !important;
+    color: #374151 !important;
+    border: 1px solid #374151 !important;
+}
+
+/* Glassmorphic settings panel */
+.glassPanel {
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(10px) !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Custom file uploader styling */
+.customUploader {
+    border: 2px dashed #cbd5e1 !important;
+    border-radius: 12px !important;
+    background-color: #f8fafc !important;
+    padding: 30px !important;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+}
+
+.customUploader:hover {
+    border-color: #3b82f6 !important;
+    background-color: #eff6ff !important;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animateFadeIn {
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Custom Row Colors */
+.rowMatched {
+    background-color: #e6f4ea !important;
+}
+.rowAmountMismatch {
+    background-color: #fef3c7 !important; /* light orange */
+}
+.rowVendorMismatch {
+    background-color: #eff6ff !important; /* light blue */
+}
+.rowDateMismatch {
+    background-color: #faf5ff !important; /* light purple */
+}
+.rowMissing {
+    background-color: #fce8e6 !important; /* light red */
+}

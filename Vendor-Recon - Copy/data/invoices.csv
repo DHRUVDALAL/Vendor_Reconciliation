@@ -1,0 +1,6 @@
+invoiceNumber,vendorCode,amount,invoiceDate,poNumber,grnNumber,currency,gstAmount,status,paymentStatus
+INV-001,V1001,15000.00,2026-06-01,PO-9001,GRN-8001,USD,150.00,Approved,Paid
+INV-002,V1001,25000.00,2026-06-10,PO-9002,GRN-8002,USD,250.00,Approved,Unpaid
+INV-003,V1002,8900.00,2026-06-12,PO-9003,GRN-8003,EUR,89.00,Approved,Unpaid
+INV-004,V1003,500000.00,2026-06-15,PO-9004,GRN-8004,INR,9000.00,Approved,Partially Paid
+INV-005,V1004,1200000.00,2026-06-20,PO-9005,GRN-8005,JPY,0.00,Approved,Unpaid
